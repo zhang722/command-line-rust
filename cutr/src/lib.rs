@@ -209,4 +209,8 @@ fn test_answer() {
     println!("{:?}", range.split(',').into_iter());
     assert_eq!(range.starts_with('+').then(f), true);
     let a = "1,3";
+    let b = a.chars().collect::<Vec<_>>();
+    let c = b.get(0..2);
+    let a = a;
+    println!("{:?}", c);
 }
