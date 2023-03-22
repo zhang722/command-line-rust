@@ -99,19 +99,23 @@ use walkdir::{DirEntry, WalkDir};
 
 #[test]
 fn test_walk_dir() -> Result<(), ()> {
-    let walker = WalkDir::new(".").into_iter();
-    for entry in walker.filter_map(|f| f.ok()) {
-        if entry.file_type().is_file() {
-            println!("{}", entry.path().display());
-        }
+    let walker = WalkDir::new(".")
+        .into_iter()
+        .filter_map(|f| f.ok())
+        .filter(|f| f.file_type().is_file());
+    for entry in walker {
+        println!("{:?}", entry.path());
     }
     Err(())
 }
 
 #[test]
 fn test_fs_read_dir() -> Result<(), ()> {
-    for file in fs::read_dir(".").unwrap() {
-        println!("{}", file.unwrap().path().display());
+    for file in fs::read_dir(".").unwrap().filter_map(|f| f.ok()) {
+        if file.file_type().unwrap().is_dir() {
+            println!("dir");
+        }
+        println!("{}", file.path().display());
     }
     Err(())
 }
